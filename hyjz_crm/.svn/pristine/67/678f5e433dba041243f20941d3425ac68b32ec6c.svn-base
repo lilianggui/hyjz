@@ -1,0 +1,32 @@
+package com.szkingdom.modules.customer.controller;
+
+import com.szkingdom.common.utils.PageUtils;
+import com.szkingdom.common.utils.R;
+import com.szkingdom.modules.customer.service.interfaces.CustomerService;
+import com.szkingdom.modules.sys.controller.AbstractController;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/customer")
+public class CustomerController extends AbstractController {
+
+    @Resource
+    private CustomerService customerService;
+    /**
+     * 所有客户列表
+     */
+    @GetMapping("/list")
+    @RequiresPermissions("sys:user:list")
+    public R list(@RequestParam Map<String, Object> params){
+        PageUtils page = customerService.queryPage(params);
+        return R.ok().put("page", page);
+    }
+
+}
